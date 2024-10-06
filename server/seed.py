@@ -4,10 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from sqlalchemy_serializer import SerializerMixin
 import random
-from server.app import db, app
-from server.models import Hero, Power, HeroPower
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from app import  app
+from models import db, Hero, Power, HeroPower
 
 
 # Create an application context
@@ -53,6 +51,6 @@ with app.app_context():
 
     db.session.commit()
 
-    print("🦸‍♀️ Done seeding!")
+    print(" successfully seeded!")
 
 
