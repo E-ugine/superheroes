@@ -11,13 +11,22 @@ class Hero(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     super_name = db.Column(db.String)
-   
     
     # Define the relationship to HeroPower
-    hero_power = db.relationship('HeroPower', backref='hero', lazy=True)
+    hero_powers = db.relationship('HeroPower', backref='hero', lazy=True)
     
-    serialize_rules = ('-hero_power.hero',)
+    serialize_rules = ('-hero_powers.hero',)
     
+    def to_dict(self, include_powers=False):
+        hero_dict = {
+            'id': self.id,
+            'name': self.name,
+            'super_name': self.super_name,
+        }
+        if include_powers:
+            hero_dict['hero_powers'] = [hp.to_dict() for hp in self.hero_powers]
+        return hero_dict
+
     def __repr__(self):
         return f'<Hero {self.id}: {self.super_name}>'
 
@@ -27,12 +36,18 @@ class Power(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     description = db.Column(db.String)
-   
     
     # Define the relationship to HeroPower
-    hero_power = db.relationship('HeroPower', backref='power', lazy=True)
+    hero_powers = db.relationship('HeroPower', backref='power', lazy=True)
     
-    serialize_rules = ('-hero_power.power',)
+    serialize_rules = ('-hero_powers.power',)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description
+        }
     
     @validates('description')
     def validate_description(self, key, body):
@@ -50,9 +65,26 @@ class HeroPower(db.Model, SerializerMixin):
     strength = db.Column(db.String)
     hero_id = db.Column(db.Integer, db.ForeignKey('heroes.id'), nullable=False)
     power_id = db.Column(db.Integer, db.ForeignKey('powers.id'), nullable=False)
-   
     
-    serialize_rules = ('-hero.hero_power', '-power.hero_power',)
+    serialize_rules = ('-hero.hero_powers', '-power.hero_powers')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'hero_id': self.hero_id,
+            'power_id': self.power_id,
+            'strength': self.strength,
+            'hero': {
+                'id': self.hero.id,
+                'name': self.hero.name,
+                'super_name': self.hero.super_name
+            },
+            'power': {
+                'id': self.power.id,
+                'name': self.power.name,
+                'description': self.power.description
+            }
+        }
     
     @validates('strength')
     def validate_strength(self, key, value):
