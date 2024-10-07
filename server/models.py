@@ -12,7 +12,7 @@ class Hero(db.Model, SerializerMixin):
     name = db.Column(db.String)
     super_name = db.Column(db.String)
     
-    # Define the relationship to HeroPower
+    #Relationshio mapping Hero to related heroPower
     hero_powers = db.relationship('HeroPower', backref='hero', lazy=True)
     
     serialize_rules = ('-hero_powers.hero',)
@@ -37,7 +37,7 @@ class Power(db.Model, SerializerMixin):
     name = db.Column(db.String)
     description = db.Column(db.String)
     
-    # Define the relationship to HeroPower
+    #Relationship mapping power to heropower
     hero_powers = db.relationship('HeroPower', backref='power', lazy=True)
     
     serialize_rules = ('-hero_powers.power',)
