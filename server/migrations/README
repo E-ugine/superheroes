@@ -2,7 +2,7 @@
 
 ## Description
 
-The **Superhero Tracking API** is designed to facilitate the management of superheroes and their powers. This API enables users to create, read, update, and delete superhero and power entries, as well as link them through the `HeroPower` model. It is particularly useful for applications that require superhero data management, such as games, databases, or educational platforms.
+The **Superhero Tracking API** is designed to facilitate the management of superheroes and their powers. This API enables users to create, read, update, and delete superhero and power entries, as well as link them through the `HeroPower` model.
 
 
 ## Demo
