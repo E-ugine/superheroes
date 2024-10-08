@@ -129,7 +129,7 @@ class PowersId(Resource):
 
 class HeroPower(Resource):
     def post(self):
-        data = request.get_json()
+        data = request.form()
         required_fields = ['strength', 'hero_id', 'power_id']
         missing_fields = [field for field in required_fields if field not in data]
 
