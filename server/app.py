@@ -133,16 +133,16 @@ class HeroPower(Resource):
         required_fields = ['strength', 'hero_id', 'power_id']
         missing_fields = [field for field in required_fields if field not in data]
 
-        # Validate presence of required fields
+        
         if missing_fields:
             return {"errors": [f"Missing field: {field}" for field in missing_fields]}, 400
 
-        # Validate 'strength' value
+    
         if data['strength'] not in ['Strong', 'Weak', 'Average']:
             return {"errors": ["validation errors"]}, 400
 
         try:
-            # Validate existence of Hero and Power
+    
             hero = db.session.get(Hero, data['hero_id']) 
             power = db.session.get(Power, data['power_id'])  
 
@@ -168,11 +168,11 @@ class HeroPower(Resource):
                 'power': power.to_dict(rules=('-hero_powers.power',))
             }
 
-            return response_data, 201  # Change to 201 for resource creation
+            return response_data, 201  
 
         except Exception as e:
             db.session.rollback()
-            print("Error occurred:", e)  # Print error for debugging
+            print("Error occurred:", e)  
             return {"errors": ["An error occurred while creating HeroPower"]}, 500
 
 
